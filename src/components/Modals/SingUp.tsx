@@ -1,20 +1,61 @@
 import { authModalState } from '@/atoms/authModalAtom';
-import React from 'react';
+import { auth } from '@/firebase/firebase';
+import { useRouter } from 'next/router';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 
 type SingUpProps = {};
 
+const FORM_INITIAL = {
+  email: '',
+  displayName: '',
+  password: ''
+};
+
 const SingUp: React.FC<SingUpProps> = () => {
+  const router = useRouter();
+  const [inputs, setInputs] = useState(FORM_INITIAL);
   const setAuthModalState = useSetRecoilState(authModalState);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+
+  useEffect(() => {
+    if (error) {
+      alert(error.message);
+    }
+  }, [error]);
 
   const handleClick = () => {
     setAuthModalState((prev) => ({ ...prev, type: 'login' }));
   };
 
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!inputs.email || !inputs.displayName || !inputs.password) {
+      return alert('Please fill all fields');
+    }
+
+    try {
+      const newUser = await createUserWithEmailAndPassword(
+        inputs.email,
+        inputs.password
+      );
+      if (!newUser) return;
+      router.push('/');
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
   return (
     <div>
-      {' '}
-      <form className="space-y-6 px-6 pb-4">
+      <form className="space-y-6 px-6 pb-4" onSubmit={handleRegister}>
         <h3 className="text-xl font-medium text-white">Register</h3>
         <div>
           <label
@@ -24,6 +65,7 @@ const SingUp: React.FC<SingUpProps> = () => {
             Email
           </label>
           <input
+            onChange={handleChangeInput}
             type="email"
             name="email"
             id="email"
@@ -40,6 +82,7 @@ const SingUp: React.FC<SingUpProps> = () => {
             Display Name
           </label>
           <input
+            onChange={handleChangeInput}
             type="text"
             name="displayName"
             id="displayName"
@@ -56,6 +99,7 @@ const SingUp: React.FC<SingUpProps> = () => {
             Password
           </label>
           <input
+            onChange={handleChangeInput}
             type="password"
             name="password"
             id="password"
