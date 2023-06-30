@@ -1,11 +1,11 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { auth } from '@/firebase/firebase';
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 
-type SingUpProps = {};
+type SignUpProps = {};
 
 const FORM_INITIAL = {
   email: '',
@@ -13,7 +13,7 @@ const FORM_INITIAL = {
   password: ''
 };
 
-const SingUp: React.FC<SingUpProps> = () => {
+const SignUp: FC<SignUpProps> = () => {
   const router = useRouter();
   const [inputs, setInputs] = useState(FORM_INITIAL);
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -111,7 +111,7 @@ const SingUp: React.FC<SingUpProps> = () => {
           type="submit"
           className="w-full text-white focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange.s"
         >
-          Register
+          {loading ? 'Registering...' : 'Register'}
         </button>
 
         <div className="text-sm font-medium text-gray-300">
@@ -128,4 +128,4 @@ const SingUp: React.FC<SingUpProps> = () => {
     </div>
   );
 };
-export default SingUp;
+export default SignUp;

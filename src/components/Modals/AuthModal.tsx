@@ -4,7 +4,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import Login from './Login';
 import ResetPassword from './ResetPassword';
-import SingUp from './SingUp';
+import SingUp from './SignUp';
 import { useCloseModal } from './useCloseModal';
 
 type AuthModalProps = {};
