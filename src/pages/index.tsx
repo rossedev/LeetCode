@@ -1,3 +1,4 @@
+import ProblemTable from '@/components/ProblemTable/ProblemTable';
 import { Topbar } from '@/components/Topbar/Topbar';
 import { Inter } from 'next/font/google';
 
@@ -32,6 +33,7 @@ export default function Home() {
                 </th>
               </tr>
             </thead>
+            <ProblemTable />
           </table>
         </div>
       </main>
