@@ -3,6 +3,7 @@ import { auth } from '@/firebase/firebase';
 import { useRouter } from 'next/router';
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 
 type SignUpProps = {};
@@ -22,7 +23,11 @@ const SignUp: FC<SignUpProps> = () => {
 
   useEffect(() => {
     if (error) {
-      alert(error.message);
+      toast.error(`Error: ${error.message}`, {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'dark'
+      });
     }
   }, [error]);
 
@@ -38,7 +43,11 @@ const SignUp: FC<SignUpProps> = () => {
     e.preventDefault();
 
     if (!inputs.email || !inputs.displayName || !inputs.password) {
-      return alert('Please fill all fields');
+      return toast.error('Please fill all fields', {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'dark'
+      });
     }
 
     try {
@@ -49,7 +58,11 @@ const SignUp: FC<SignUpProps> = () => {
       if (!newUser) return;
       router.push('/');
     } catch (error: any) {
-      alert(error.message);
+      toast.error(`Error: ${error.message}`, {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'dark'
+      });
     }
   };
 
