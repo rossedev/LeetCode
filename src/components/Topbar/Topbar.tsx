@@ -1,14 +1,18 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { auth } from '@/firebase/firebase';
+import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 import Logout from '../Buttons/Logout';
+import MenuProblems from './MenuProblems';
 
-type Props = {};
+type Props = {
+  problemPage?: boolean;
+};
 
-export const Topbar: FC<Props> = () => {
+export const Topbar: FC<Props> = ({ problemPage }) => {
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
 
@@ -18,10 +22,23 @@ export const Topbar: FC<Props> = () => {
 
   return (
     <nav className="relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7">
-      <div className="flex w-full items-center justify-between max-w-[1200px] mx-auto">
+      <div
+        className={`flex w-full items-center justify-between ${
+          problemPage ? '' : 'max-w-[1200px] mx-auto'
+        }`}
+      >
         <Link href="/" className="h-[22px] flex-1">
-          <img src="/logo-full.png" alt="Logo" className="h-full" />
+          <Image
+            src="/logo-full.png"
+            alt="Logo"
+            width={100}
+            height={100}
+            className="h-full"
+          />
         </Link>
+
+        {problemPage && <MenuProblems />}
+
         <div className="flex items-center space-x-4 flex-1 justify-end">
           <div>
             <a
