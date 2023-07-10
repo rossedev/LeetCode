@@ -6,6 +6,7 @@ import { FC } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 import Logout from '../Buttons/Logout';
+import Timer from '../Timer/Timer';
 import MenuProblems from './MenuProblems';
 
 type Props = {
@@ -50,6 +51,8 @@ export const Topbar: FC<Props> = ({ problemPage }) => {
               Premium
             </a>
           </div>
+
+          {problemPage && <Timer />}
 
           {!user && (
             <Link href="/auth" onClick={handleOpenLogin}>
